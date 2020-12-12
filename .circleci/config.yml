@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   build_docker_image:
-    name: Build the Docker image with all the dependencies and Amplify CLI
     docker:
       - image: circleci/node:10.18
         auth:
@@ -16,11 +15,14 @@ jobs:
           docker_layer_caching: false
 
       # build and push Docker image
-      - run: |
-          TAG=0.1.$CIRCLE_SHA1
-          docker build -t yathib/test-hub:$TAG .
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push yathib/test-hub:$TAG
+      - run:
+          name: Build docker image with all dependencies
+          command: |
+            TAG=0.1.$CIRCLE_SHA1
+            docker build -t yathib/test-hub:$TAG .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push yathib/test-hub:$TAG
+
 workflows:
   version: 2
   build_test_deploy:
