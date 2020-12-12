@@ -1,5 +1,5 @@
 FROM circleci/node:10.18
-RUN apt-get update && apt-get install -y \
+RUN sudo apt-get update && apt-get install -y \
   xdg-utils
 
 # Install Java 
