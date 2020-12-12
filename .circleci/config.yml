@@ -22,5 +22,6 @@ jobs:
           docker push yathib/test-hub:$TAG
 workflows:
   version: 2
-  jobs:
-    - build_docker_image
+  build_test_deploy:
+    jobs:
+      - build_docker_image
