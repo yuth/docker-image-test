@@ -3,6 +3,26 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.15.3
 
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10.18
+      auth:
+        username: $DOCKERHUB_USERNAME
+        password: $DOCKERHUB_ACCESS_TOKEN
+  resource_class: large
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - run: echo $PATH
+      - run: java --version
+      - run: gradle --version 
+      - run: go version 
+      - run: pipenv --version
+      - run: dotnet tool list -g
+
 workflows:
   build_and_push_image:
     jobs:
@@ -12,3 +32,4 @@ workflows:
           dockerfile: Dockerfile
           repo: amplify-cli-base-image
           tag: "latest"
+      - test
