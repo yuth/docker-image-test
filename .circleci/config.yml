@@ -10,6 +10,4 @@ workflows:
           checkout: true
           create-repo: true
           dockerfile: Dockerfile
-          repo: amplify-cli-base-image
-          skip-when-tags-exist: false
           tag: "latest"
