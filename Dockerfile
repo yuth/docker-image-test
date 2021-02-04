@@ -36,6 +36,21 @@ RUN sudo apt install python3-pip
 RUN pip3 install --user pipenv
 RUN python3 --version
 
+#Install .Net
+WORKDIR /tmp
+RUN sudo apt-get install apt-transport-https ca-certificates
+RUN wget -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
+RUN sudo mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/
+RUN wget https://packages.microsoft.com/config/debian/9/prod.list
+RUN sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
+RUN sudo chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
+RUN sudo chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 
-ENTRYPOINT echo $PATH && javac -version && gradle --version && go version && pipenv --version
-
+RUN sudo apt-get update
+RUN sudo apt-get install apt-transport-https
+RUN sudo apt-get update
+RUN sudo apt-get install dotnet-sdk-3.1
+RUN dotnet --version
+RUN dotnet tool install -g amazon.lambda.tools
+RUN dotnet tool install -g amazon.lambda.testtool-3.1
+ENV PATH=${PATH}:${HOME}/.dotnet/tools
